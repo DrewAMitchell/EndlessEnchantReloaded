@@ -1,0 +1,8 @@
+name: EndlessEnchant
+version: 3.25
+author: Drkmaster83
+main: me.Drkmaster83.EndlessEnchant.EndlessEnchant
+commands:
+  EndlessEnchant:
+    description: The base command for EndlessEnchant.
+    aliases: [ee, enchant]
