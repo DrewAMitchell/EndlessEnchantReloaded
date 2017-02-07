@@ -3,7 +3,7 @@ package me.Drkmaster83.EndlessEnchant;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class MapUtils 
+public class MapUtils
 {
 	public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
 		for (Entry<T, E> entry : map.entrySet()) {

@@ -16,7 +16,6 @@ public class YMLConfig
 		this.p = p;
 		this.fileName = fileName;
 		if(!(fileName.endsWith(".yml"))) this.fileName = this.fileName + ".yml";
-		initialize();
 	}
 	
 	public void initialize() {
