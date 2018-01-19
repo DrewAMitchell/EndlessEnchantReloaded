@@ -1,81 +1,45 @@
 package me.Drkmaster83.EndlessEnchant;
 
 import java.io.File;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
+import java.io.IOException;
 
-public class YMLConfig
+import org.bukkit.configuration.file.YamlConfiguration;
+
+public class YMLConfig extends YamlConfiguration
 {
-	private Plugin p;
-	private String fileName;
-	private File dataFile;
-	private YamlConfiguration data;
+	private EndlessEnchant pl;
+	private File file;
 	
-	public YMLConfig(Plugin p, String fileName) {
-		this.p = p;
-		this.fileName = fileName;
-		if(!(fileName.endsWith(".yml"))) this.fileName = this.fileName + ".yml";
+	public YMLConfig(EndlessEnchant pl, String name) {
+		this.pl = pl;
+		if(!name.endsWith(".yml")) name += ".yml";
+		file = new File(pl.getDataFolder(), name);
 	}
 	
-	public void initialize() {
-		dataFile = new File(p.getDataFolder(), fileName);
-	}
-	
-	/**
-	 * @return False if it was nonexistant
-	 * @function Creates file with initialized data. 
-	 */
-	public boolean create() {
-		if(dataFile == null) dataFile = new File(p.getDataFolder(), fileName);
-		try {
-			if(!p.getDataFolder().exists()) p.getDataFolder().mkdir();
-			if(!dataFile.exists()) {
-				dataFile.createNewFile();
-				data = YamlConfiguration.loadConfiguration(dataFile);
-				save();
-				return false;
+	/** @function Reload config object in RAM to that of the file */
+	public boolean reload() {
+		boolean existed = file.exists();
+		if(!file.exists()) {
+			if(pl.getResource(file.getName()) != null) pl.saveResource(file.getName(), true); //Save the one from the JAR if possible
+			else {
+				try {
+					file.createNewFile(); //Create a blank file
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			data = YamlConfiguration.loadConfiguration(dataFile);
-			return true;
 		}
-		catch (Exception e) { 
+		try {
+			this.load(file);
+		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
+		return existed;
 	}
 	
-	/**
-	 * @return The data.yml file's configuration object.
-	 */
-	public FileConfiguration toFileConf() {
-		return data;
-	}
-	
-	/**
-	 * @function Sets data and saves that data to the file
-	 */
-	public void set(String path, Object value) {
-		if(data.contains(path)) {
-			if(value.equals(data.get(path))) return;
-		}
-		data.set(path, value);
-		save();
-	}
-	
-	/**
-	 * @function Reload config object in RAM to that of the file
-	 */
-	public void reload() {
-		data = YamlConfiguration.loadConfiguration(dataFile);
-		save();
-	}
-	
-	/**
-	 * @function Save config object in RAM to the file
-	 */
+	/** @function Save config object in RAM to the file */
 	public void save() {
-		try	{ data.save(dataFile); }
+		try	{ this.save(file); }
 		catch (Exception e)	{ e.printStackTrace(); }
 	}
 }

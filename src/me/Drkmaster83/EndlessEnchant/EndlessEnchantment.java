@@ -19,10 +19,9 @@ public enum EndlessEnchantment
 	KNOCKBACK("WEAPON", "c", 19),
 	FIRE_ASPECT("WEAPON", "c", 20),
 	LOOT_BONUS_MOBS("WEAPON", "c", 21),
-	SWEEPING("WEAPON", "c", 22),
+	SWEEPING_EDGE("WEAPON", "c", 22),
 	DIG_SPEED("TOOL", "d", 32),
 	SILK_TOUCH("TOOL", "d", 33),
-	DURABILITY("ALL", "a", 34),
 	LOOT_BONUS_BLOCKS("TOOL", "d", 35),
 	ARROW_DAMAGE("RANGED_WEAPON", "4", 48),
 	ARROW_KNOCKBACK("RANGED_WEAPON", "4", 49),
@@ -30,11 +29,12 @@ public enum EndlessEnchantment
 	ARROW_INFINITE("RANGED_WEAPON", "4", 51),
 	LUCK("FISHING", "3", 61),
 	LURE("FISHING", "3", 62),
+	DURABILITY("ALL", "a", 34),
 	MENDING("ALL", "a", 70),
 	VANISHING_CURSE("ALL", "a", 71);
 	
-	String category, categoryColor;
-	short id;
+	private String category, categoryColor;
+	private short id;
 	
 	EndlessEnchantment(String category, String categoryColor, int id) {
 		this.category = category;
@@ -54,9 +54,10 @@ public enum EndlessEnchantment
 		return id;
 	}
 	
-	public static EndlessEnchantment getByName(String formalName) {
+	/** Case-insensitive */
+	public static EndlessEnchantment getByName(String baseName) {
 		for(EndlessEnchantment e : values()) {
-			if(e.name().equalsIgnoreCase(formalName.toUpperCase())) return e;
+			if(e.name().equals(baseName.toUpperCase())) return e;
 		}
 		return null;
 	}
